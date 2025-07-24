@@ -8,9 +8,12 @@ rp-api/
 # 2. Ignorer les fichiers par extension
 #    L'astérisque (*) est un caractère joker qui signifie "n'importe quel nom de fichier".
 
+# Ingorer les fichiers mesures
+*.csv
 # Ignorer les fichiers objets (.o, .obj)
 *.o
 *.obj
+
 
 # Ignorer les fichiers exécutables
 # Sur Windows, ils finissent souvent par .exe, .dll, .bat, etc.
@@ -19,6 +22,7 @@ rp-api/
 *.bat
 *.com
 *.msi
+*.
 
 # Sur Linux/macOS, les exécutables n'ont souvent pas d'extension.
 # On utilise une astuce : on ignore tous les fichiers qui n'ont PAS d'extension.
