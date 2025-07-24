@@ -42,7 +42,7 @@ int main(int argc, char **argv)
     }
 
     int16_t *buff1 = (int16_t *)malloc(dsize * sizeof(float));
-    uint32_t *posChA_t;
+    uint32_t *posChA_t= (uint32_t*)malloc(number_of_files * sizeof(float));
     bool fillState = false;
 
 
@@ -226,16 +226,13 @@ int main(int argc, char **argv)
         }
 
         rp_AcqAxiGetWritePointerAtTrig(RP_CH_2,posChA_t+i);
-        fprintf(stderr,"Tr pos1: 0x%X\n",posChA[i]);
-
-        
-
-        
+        fprintf(stderr,"Tr pos1: 0x%X\n",posChA_t[i]);
 
     }
 
-    for(j=0; j<=nomFichier; j++){
-        if(rp_AcqAxiGetDataRaw(RP_CH_2, posChA[j], &dsize, buff1)!=RP_OK){
+    int j;
+    for(j=0; j<=number_of_files; j++){
+        if(rp_AcqAxiGetDataRaw(RP_CH_2, posChA_t[j], &dsize, buff1)!=RP_OK){
             fprintf(stderr, "rp_AcqAxiGetDataV failed\n");
         }
         //////  Ecriture des données dans le fichier    //////
