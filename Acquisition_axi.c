@@ -13,8 +13,7 @@
 int main(int argc, char **argv)
 {
     int dsize = DATA_SIZE;
-    uint32_t dec =1; 
-    uint32_t size1 = dsize;
+    uint32_t dec =1;
     float *buff1 = (float *)malloc(dsize * sizeof(float));
     uint32_t posChA;
     bool fillState = false;
@@ -180,7 +179,7 @@ int main(int argc, char **argv)
             return -1;
         }
          */
-        rp_acq_trig_state_t state = RP_TRIG_STATE_TRIGGERED;
+        rp_acq_trig_state_t state;
         while(1){
             rp_AcqGetTriggerState(&state);
             if(state == RP_TRIG_STATE_TRIGGERED){
@@ -206,7 +205,7 @@ int main(int argc, char **argv)
         rp_AcqAxiGetWritePointerAtTrig(RP_CH_2,&posChA);
         fprintf(stderr,"Tr pos1: 0x%X\n",posChA);
         
-        if(rp_AcqAxiGetDataV(RP_CH_2, posChA, &size1, buff1)!=RP_OK){
+        if(rp_AcqAxiGetDataV(RP_CH_2, posChA, &dsize, buff1)!=RP_OK){
             fprintf(stderr, "rp_AcqAxiGetDataV failed\n");
         }
         
@@ -224,10 +223,9 @@ int main(int argc, char **argv)
         fprintf(fichier, "%f", time);
             if (i!= dsize -1) fprintf(fichier, ",");
         }
-
+        
         fprintf(fichier, "\n");
         fclose(fichier);
-        sleep(delayRepeat);
 
 }
 
