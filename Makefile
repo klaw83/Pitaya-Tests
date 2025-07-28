@@ -16,7 +16,7 @@ endif
 
 PRGS =  sin\
 	Burst\
-	Aquisition_axi\
+	Acquisition_axi\
 	digital_led_blink\
 	Simulation\
 	SimulationV1\
@@ -27,7 +27,7 @@ SRC := $(patsubst %,%.c,$(PRGS))
 all: $(PRGS)
 
 $(PRGS): %: %.c
-	$(CC) $< $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o $@
+	$(CC) $< $(CFLAGS) $(LDFLAGS) $(LDLIBS) -o $@.exe
 
 clean:
 	$(RM) *.o
