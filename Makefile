@@ -32,6 +32,7 @@ $(PRGS): %: %.c
 clean:
 	$(RM) *.o
 	$(RM) $(OBJS)
+	$(RM) *.exe
 
 clean_all: clean
 	$(RM) $(PRGS)
