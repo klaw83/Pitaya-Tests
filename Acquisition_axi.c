@@ -1,4 +1,4 @@
-/////// VERSION 2 - rapide dans un seul fichier //////  
+/////// VERSION 2 - Rapide 1 - Dans un seul fichier avec une ligne ajourée à chaque itération//////  
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -87,7 +87,7 @@ int main(int argc, char **argv)
     strcpy(nomFichier, argv[4]);
     Larmor_frequency_Hertz = atof(argv[5]);
     excitation_duration_seconds = atof(argv[6]);
-    printf("larmor %f, duration excitation %f\n",Larmor_frequency_Hertz, excitation_duration_seconds);
+    //printf("larmor %f, duration excitation %f\n",Larmor_frequency_Hertz, excitation_duration_seconds);
 
     // Vérification des valeurs numériques
     if (dsize <= 0 || dec < 0 || number_of_files <= 0) {
@@ -270,7 +270,7 @@ int main(int argc, char **argv)
             }
         }
 
-        printf ("wait to be filled\n");
+        //printf ("wait to be filled\n");
         while (!fillState) {
             if (rp_AcqAxiGetBufferFillState(RP_CH_2, &fillState) != RP_OK) {
                 fprintf(stderr, "rp_AcqAxiGetBufferFillState RP_CH_2 failed!\n");
@@ -286,7 +286,7 @@ int main(int argc, char **argv)
         if(rp_AcqAxiGetWritePointerAtTrig(RP_CH_2, &posChA)!=RP_OK){
             fprintf(stderr,"rp_AcqAxiGetWritePointerAtTrig Error");
         }
-        printf("Tr pos1: 0x%x\n",posChA);
+        //printf("Tr pos1: 0x%x\n",posChA);
 
         if(rp_AcqAxiGetDataV(RP_CH_2, posChA, &dsize, buff1)!=RP_OK){
             fprintf(stderr, "rp_AcqAxiGetDataV failed\n");
@@ -294,7 +294,7 @@ int main(int argc, char **argv)
         
 
         //////  Ecriture des données dans le fichier    //////
-        printf("ecriture FID %d\n",i);
+        //printf("ecriture FID %d\n",i);
         for (int i = 0; i < dsize; i++) {
             //printf("[%d]\t%f\n",i,buff1[i]);
             fprintf(fichier, "%f", buff1[i]);
