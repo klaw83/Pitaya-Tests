@@ -86,7 +86,7 @@ int main(int argc, char **argv)
     strcpy(nomFichier, argv[4]);
     Larmor_frequency_Hertz = atof(argv[5]);
     excitation_duration_seconds = atof(argv[6]);
-    //printf("larmor %f, duration excitation %f\n",Larmor_frequency_Hertz, excitation_duration_seconds);
+    printf("larmor %f, duration excitation %f\n",Larmor_frequency_Hertz, excitation_duration_seconds);
 
     // Vérification des valeurs numériques
     if (dsize <= 0 || dec < 0 || number_of_files <= 0) {
@@ -132,6 +132,7 @@ int main(int argc, char **argv)
     }
 
 
+
     //// INITIALISATION GENERATION BURST ///////
     if(rp_GenReset() != RP_OK){
             fprintf(stderr, "rp_GenReset failed!\n");
@@ -152,8 +153,7 @@ int main(int argc, char **argv)
     if(rp_GenMode(RP_CH_1, RP_GEN_MODE_BURST) != RP_OK){
         fprintf(stderr, "rp_GenMode RP_CH_1 BURST failed!\n");
         return -1;
-    }
-    
+    }    
     if(rp_GenBurstCount(RP_CH_1, excitation_burst_cycles_tot) != RP_OK){
         fprintf(stderr, "rp_GenBurstCount RP_CH_1 failed!\n");
         return -1;
@@ -161,13 +161,11 @@ int main(int argc, char **argv)
     if(rp_GenBurstRepetitions(RP_CH_1, 1) != RP_OK){
         fprintf(stderr, "rp_GenBurstRepetitions RP_CH_1 failed!\n");
         return -1;
-    }//Répété 1 fois pour que le burst dure qq usecondes
-    
+    }//Répété 1 fois pour que le burst dure qq usecondes   
     if(rp_GenBurstPeriod(RP_CH_1, 1) != RP_OK){
         fprintf(stderr, "rp_GenBurstPeriod RP_CH_1 failed!\n");
         return -1;
     }//une micro seconde entre chaque répétition
-    
     if( rp_GenOutEnable(RP_CH_1) != RP_OK){
         fprintf(stderr, "rp_GenOutEnable RP_CH_1 failed!\n");
         return -1;
@@ -238,6 +236,7 @@ int main(int argc, char **argv)
             return -1;
         }
 
+        // ATTENTE DU DECLENCHEMENT DU TRIGGER
         while(1){
             rp_AcqGetTriggerState(&state);
             if(state == RP_TRIG_STATE_TRIGGERED){
@@ -245,26 +244,14 @@ int main(int argc, char **argv)
                 break;
             }
         }
-        ////////////Declenchement non syncronisé : ///////////////
-        /*if( rp_GenTriggerOnly() != RP_OK){ //Déclencgement de l'oscilateur local
-            fprintf(stderr, "rp_GenTriggerOnlyBoth failed!\n");
-            return -1;
-        }
-         if( rp_GenTriggerOnly(RP_CH_1) != RP_OK){ // Déclenchement de l'excitation
-            fprintf(stderr, "rp_GenTriggerOnly Both failed!\n");
-            return -1;
-        }
-        */
 
-       ////////////Declenchement syncronisé:///////////////
- 
-
-      if(rp_GenSynchronise() != RP_OK){
+       ////////////DECLENCHEMENT SYNCHRONISE///////////////
+        if(rp_GenSynchronise() != RP_OK){
             fprintf(stderr, "rp_GenSynchronise failed!\n");
             return -1;
         }
-        
-        //printf ("wait to be filled\n");
+         
+        printf ("wait to be filled\n");
         while (!fillState) {
             if (rp_AcqAxiGetBufferFillState(RP_CH_2, &fillState) != RP_OK) {
                 fprintf(stderr, "rp_AcqAxiGetBufferFillState RP_CH_2 failed!\n");
@@ -280,7 +267,7 @@ int main(int argc, char **argv)
         if(rp_AcqAxiGetWritePointerAtTrig(RP_CH_2, &posChA)!=RP_OK){
             fprintf(stderr,"rp_AcqAxiGetWritePointerAtTrig Error");
         }
-        //printf("Tr pos1: 0x%x\n",posChA);
+        printf("Tr pos1: 0x%x\n",posChA);
 
         if(rp_AcqAxiGetDataV(RP_CH_2, posChA, &dsize, buff1)!=RP_OK){
             fprintf(stderr, "rp_AcqAxiGetDataV failed\n");
@@ -288,7 +275,7 @@ int main(int argc, char **argv)
         
 
         //////  Ecriture des données dans le fichier    //////
-        //printf("ecriture FID %d\n",i);
+        printf("ecriture FID %d\n",i);
         for (int i = 0; i < dsize; i++) {
             //printf("[%d]\t%f\n",i,buff1[i]);
             fprintf(fichier, "%f", buff1[i]);
@@ -303,8 +290,7 @@ int main(int argc, char **argv)
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 
     printf("Temps d'execution : %lf\n",time_spent);
-    printf("\033[0;32m%d Mesures faites\033[0m\n",number_of_files);
-    
+
     fclose(fichier);
 
     /* Releasing resources */
