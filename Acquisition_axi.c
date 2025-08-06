@@ -303,7 +303,8 @@ int main(int argc, char **argv)
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 
     printf("Temps d'execution : %lf\n",time_spent);
-
+    printf("\033[0;32m%d Mesures faites\033[0m\n",number_of_files);
+    
     fclose(fichier);
 
     /* Releasing resources */
