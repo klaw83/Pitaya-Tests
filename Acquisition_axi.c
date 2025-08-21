@@ -1,5 +1,6 @@
 /////// VERSION 2 - rapide dans un seul fichier ////// 
-////// 10 en 60ms  
+/////// 10 en 60ms
+/////// utiliser Acquisition RMN FULL
 
 #include <stdio.h>
 #include <stdlib.h>
